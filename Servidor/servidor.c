@@ -29,10 +29,9 @@ int main(int argc, char *charv[]){
 		printf("Error en el Listen");
 	}
 
-	printf("Escuchando\n");
-
 	// bucle infinit per rebre peticions dels clients
 	while(1){
+		printf("Escuchando\n");
 		//espera fins que un client realitzi una connexió
 		sock_conn = accept(sock_listen, NULL, NULL);
 		ret=read(sock_conn,buff, sizeof(buff));

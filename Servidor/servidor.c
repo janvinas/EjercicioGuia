@@ -55,6 +55,10 @@ int main(int argc, char *charv[]){
 			//si el codi del missatge és 2, ens estan demanant si el nom és bonic (si comença per M o S)
 			char bonic = (nombre[0] == 'M' || nombre[0] == 'S');
 			sprintf(buff2, "%s", bonic ? "SI" : "NO");
+		}else if(codigo == 3){
+			//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
+			float altura = atof(strtok(NULL, "/"));
+			sprintf(buff2, "%s", altura > 1.70 ? "SI", "NO");
 		}
 
 		//imprimeix el buffer al socket i tanca'l

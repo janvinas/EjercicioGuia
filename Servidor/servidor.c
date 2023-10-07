@@ -14,6 +14,7 @@ int main(int argc, char *charv[]){
 
 	if((sock_listen = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		printf("Error creant socket");
+		exit(-1);
 	}
 
 	memset(&serv_adr, 0, sizeof(serv_adr));
@@ -23,10 +24,12 @@ int main(int argc, char *charv[]){
 
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
 		printf ("Error al bind");
+		exit(-1);
 	}
 	//La cola de peticiones pendientes no podr? ser superior a 4 --> no sería 2 ???
 	if (listen(sock_listen, 2) < 0){
 		printf("Error en el Listen");
+		exit(-1);
 	}
 
 	// bucle infinit per rebre peticions dels clients
@@ -57,7 +60,7 @@ int main(int argc, char *charv[]){
 		}else if(codigo == 3){
 			//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
 			float altura = atof(strtok(NULL, "/"));
-			sprintf(buff2, "%s", altura > 1.70 ? "SI", "NO");
+			sprintf(buff2, "%s", altura > 1.70 ? "SI" : "NO");
 		}
 
 		//imprimeix el buffer al socket i tanca'l

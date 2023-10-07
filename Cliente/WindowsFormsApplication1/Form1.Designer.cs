@@ -36,6 +36,8 @@
             this.Bonito = new System.Windows.Forms.RadioButton();
             this.Alto = new System.Windows.Forms.RadioButton();
             this.Altura = new System.Windows.Forms.TextBox();
+            this.Conectar = new System.Windows.Forms.Button();
+            this.Desconectar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -130,11 +132,33 @@
             this.Altura.Size = new System.Drawing.Size(100, 26);
             this.Altura.TabIndex = 10;
             // 
+            // Conectar
+            // 
+            this.Conectar.Location = new System.Drawing.Point(59, 61);
+            this.Conectar.Name = "Conectar";
+            this.Conectar.Size = new System.Drawing.Size(125, 42);
+            this.Conectar.TabIndex = 7;
+            this.Conectar.Text = "Conectar";
+            this.Conectar.UseVisualStyleBackColor = true;
+            this.Conectar.Click += new System.EventHandler(this.Conectar_Click);
+            // 
+            // Desconectar
+            // 
+            this.Desconectar.Location = new System.Drawing.Point(213, 61);
+            this.Desconectar.Name = "Desconectar";
+            this.Desconectar.Size = new System.Drawing.Size(123, 42);
+            this.Desconectar.TabIndex = 8;
+            this.Desconectar.Text = "Desconectar";
+            this.Desconectar.UseVisualStyleBackColor = true;
+            this.Desconectar.Click += new System.EventHandler(this.Desconectar_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1112, 865);
+            this.Controls.Add(this.Desconectar);
+            this.Controls.Add(this.Conectar);
             this.Controls.Add(this.groupBox1);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
@@ -156,6 +180,8 @@
         private System.Windows.Forms.RadioButton Bonito;
         private System.Windows.Forms.RadioButton Alto;
         private System.Windows.Forms.TextBox Altura;
+        private System.Windows.Forms.Button Conectar;
+        private System.Windows.Forms.Button Desconectar;
     }
 }
 

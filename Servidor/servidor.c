@@ -37,34 +37,44 @@ int main(int argc, char *charv[]){
 		printf("Escuchando\n");
 		//espera fins que un client realitzi una connexió
 		sock_conn = accept(sock_listen, NULL, NULL);
-		ret=read(sock_conn,buff, sizeof(buff));
-		//posa un valor 0 al final per acabar la string
-		buff[ret]='\0';
+		printf("Cliente conectado\n");
+		while(1){
+			ret=read(sock_conn,buff, sizeof(buff));
+			//posa un valor 0 al final per acabar la string
+			buff[ret]='\0';
 
-		printf("Mensaje recibido!: %s\n", buff);
+			printf("Mensaje recibido!: %s\n", buff);
 
-		char *token = strtok(buff, "/");
-		int codigo = atoi(token);
+			char *token = strtok(buff, "/");
+			int codigo = atoi(token);
 
-		token = strtok(NULL, "/");
-		char nombre[20];
-		strcpy(nombre, token);
+			if(codigo == 0){
+				close(sock_conn);
+				printf("Cliente desconectado\n");
+				break;
+			}
 
-		if(codigo == 1){
-			//si el codi del missatge és 1, ens estan demanant la longitud del nom
-			sprintf(buff2, "%d", (int) strlen(nombre));
-		}else if(codigo == 2){
-			//si el codi del missatge és 2, ens estan demanant si el nom és bonic (si comença per M o S)
-			char bonic = (nombre[0] == 'M' || nombre[0] == 'S');
-			sprintf(buff2, "%s", bonic ? "SI" : "NO");
-		}else if(codigo == 3){
-			//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
-			float altura = atof(strtok(NULL, "/"));
-			sprintf(buff2, "%s", altura > 1.70 ? "SI" : "NO");
+			// per qualsevol codi diferent de 0:
+			token = strtok(NULL, "/");
+			char nombre[20];
+			strcpy(nombre, token);
+			
+			if(codigo == 1){
+				//si el codi del missatge és 1, ens estan demanant la longitud del nom
+				sprintf(buff2, "%d", (int) strlen(nombre));
+			}else if(codigo == 2){
+				//si el codi del missatge és 2, ens estan demanant si el nom és bonic (si comença per M o S)
+				char bonic = (nombre[0] == 'M' || nombre[0] == 'S');
+				sprintf(buff2, "%s", bonic ? "SI" : "NO");
+			}else if(codigo == 3){
+				//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
+				float altura = atof(strtok(NULL, "/"));
+				sprintf(buff2, "%s", altura > 1.70 ? "SI" : "NO");
+			}
+
+			//imprimeix el buffer al socket i tanca'l
+			//la resposta només s'envia si el codi del missatge no és 0
+			write(sock_conn,buff2, strlen(buff2));
 		}
-
-		//imprimeix el buffer al socket i tanca'l
-		write(sock_conn,buff2, strlen(buff2));
-		close(sock_conn); 
 	}
 }

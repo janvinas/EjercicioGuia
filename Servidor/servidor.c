@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <pthread.h>
 
 /**
  * Retorna si la cadena de caràcters és palíndrom 1 o no 0
@@ -29,11 +30,69 @@ void toUppercase(char *text){
 }
 
 
-int main(int argc, char *charv[]){
-	int sock_conn, sock_listen, ret;
-	struct sockaddr_in serv_adr;
+/**
+ * Función de atención al cliente para crear threads
+*/
+void *atenderCliente(void *socket){
+	int sock_conn = *((int*) socket);
+
 	char buff[512];
 	char buff2[512];
+
+	// bucle infinit per rebre peticions dels clients
+	while(1){
+		int ret = read(sock_conn,buff, sizeof(buff));
+		//posa un valor 0 al final per acabar la string
+		buff[ret]='\0';
+
+		printf("Mensaje recibido!: %s\n", buff);
+
+		char *token = strtok(buff, "/");
+		int codigo = atoi(token);
+
+		if(codigo == 0){
+			close(sock_conn);
+			printf("Cliente desconectado\n");
+			break;
+		}
+
+		// per qualsevol codi diferent de 0:
+		token = strtok(NULL, "/");
+		char nombre[20];
+		strcpy(nombre, token);
+		
+		if(codigo == 1){
+			//si el codi del missatge és 1, ens estan demanant la longitud del nom
+			sprintf(buff2, "%d", (int) strlen(nombre));
+		}else if(codigo == 2){
+			//si el codi del missatge és 2, ens estan demanant si el nom és bonic (si comença per M o S)
+			char bonic = (nombre[0] == 'M' || nombre[0] == 'S');
+			sprintf(buff2, "%s", bonic ? "SI" : "NO");
+		}else if(codigo == 3){
+			//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
+			float altura = atof(strtok(NULL, "/"));
+			sprintf(buff2, "%s", altura > 1.70 ? "SI" : "NO");
+		}else if(codigo == 4){
+			//retorna si el nom es palíndrom 'Y'/'N'
+			sprintf(buff2, "%s", isPalindrome(nombre) ? "SI" : "NO");
+		}else if(codigo == 5){
+			//retorna el nom en majúscules
+			char copiaNombre[20];
+			strcpy(copiaNombre, nombre);
+			toUppercase(copiaNombre);
+			sprintf(buff2, "%s", copiaNombre);
+		}
+
+		//imprimeix el buffer al socket i tanca'l
+		//la resposta només s'envia si el codi del missatge no és 0
+		write(sock_conn, buff2, strlen(buff2));
+	}
+}
+
+
+int main(int argc, char *charv[]){
+	struct sockaddr_in serv_adr;
+	int sock_listen;
 
 	if((sock_listen = socket(AF_INET, SOCK_STREAM, 0)) < 0){
 		printf("Error creant socket");
@@ -55,58 +114,17 @@ int main(int argc, char *charv[]){
 		exit(-1);
 	}
 
-	// bucle infinit per rebre peticions dels clients
+	int sockets[100];
+	int i = 0;
 	while(1){
 		printf("Escuchando\n");
-		//espera fins que un client realitzi una connexió
-		sock_conn = accept(sock_listen, NULL, NULL);
+		int sock_conn = accept(sock_listen, NULL, NULL);
 		printf("Cliente conectado\n");
-		while(1){
-			ret=read(sock_conn,buff, sizeof(buff));
-			//posa un valor 0 al final per acabar la string
-			buff[ret]='\0';
-
-			printf("Mensaje recibido!: %s\n", buff);
-
-			char *token = strtok(buff, "/");
-			int codigo = atoi(token);
-
-			if(codigo == 0){
-				close(sock_conn);
-				printf("Cliente desconectado\n");
-				break;
-			}
-
-			// per qualsevol codi diferent de 0:
-			token = strtok(NULL, "/");
-			char nombre[20];
-			strcpy(nombre, token);
-			
-			if(codigo == 1){
-				//si el codi del missatge és 1, ens estan demanant la longitud del nom
-				sprintf(buff2, "%d", (int) strlen(nombre));
-			}else if(codigo == 2){
-				//si el codi del missatge és 2, ens estan demanant si el nom és bonic (si comença per M o S)
-				char bonic = (nombre[0] == 'M' || nombre[0] == 'S');
-				sprintf(buff2, "%s", bonic ? "SI" : "NO");
-			}else if(codigo == 3){
-				//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
-				float altura = atof(strtok(NULL, "/"));
-				sprintf(buff2, "%s", altura > 1.70 ? "SI" : "NO");
-			}else if(codigo == 4){
-				//retorna si el nom es palíndrom 'Y'/'N'
-				sprintf(buff2, "%s", isPalindrome(nombre) ? "SI" : "NO");
-			}else if(codigo == 5){
-				//retorna el nom en majúscules
-				char copiaNombre[20];
-				strcpy(copiaNombre, nombre);
-				toUppercase(copiaNombre);
-				sprintf(buff2, "%s", copiaNombre);
-			}
-
-			//imprimeix el buffer al socket i tanca'l
-			//la resposta només s'envia si el codi del missatge no és 0
-			write(sock_conn, buff2, strlen(buff2));
-		}
+		sockets[i] = sock_conn;
+		pthread_t t;	//no necessitem aquest valor, no el guardem enlloc
+		pthread_create(&t, NULL, atenderCliente, &sockets[i]);
+		i++;
 	}
+
+
 }

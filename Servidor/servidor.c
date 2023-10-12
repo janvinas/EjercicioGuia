@@ -5,6 +5,29 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdio.h>
+#include <ctype.h>
+
+/**
+ * Retorna si la cadena de caràcters és palíndrom 1 o no 0
+*/
+char isPalindrome(char *text){
+    int len = strlen(text);
+    for(int i = 0; i < (len / 2); i++){
+        if( toupper(text[i]) != toupper(text[len - 1 - i]) ) return 0;
+    }
+
+    return 1;
+}
+
+/**
+ * Passa tot el text d'entrada a majúscules (modifica la string!)
+*/
+void toUppercase(char *text){
+    for(int i = 0; i < strlen(text); i++){
+        text[i] = toupper(text[i]);
+    }
+}
+
 
 int main(int argc, char *charv[]){
 	int sock_conn, sock_listen, ret;
@@ -70,11 +93,20 @@ int main(int argc, char *charv[]){
 				//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
 				float altura = atof(strtok(NULL, "/"));
 				sprintf(buff2, "%s", altura > 1.70 ? "SI" : "NO");
+			}else if(codigo == 4){
+				//retorna si el nom es palíndrom 'Y'/'N'
+				sprintf(buff2, "%s", isPalindrome(nombre) ? "SI" : "NO");
+			}else if(codigo == 5){
+				//retorna el nom en majúscules
+				char copiaNombre[20];
+				strcpy(copiaNombre, nombre);
+				toUppercase(copiaNombre);
+				sprintf(buff2, "%s", copiaNombre);
 			}
 
 			//imprimeix el buffer al socket i tanca'l
 			//la resposta només s'envia si el codi del missatge no és 0
-			write(sock_conn,buff2, strlen(buff2));
+			write(sock_conn, buff2, strlen(buff2));
 		}
 	}
 }

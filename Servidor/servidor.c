@@ -8,6 +8,9 @@
 #include <ctype.h>
 #include <pthread.h>
 
+int contador = 0; //incrementará cada vez que el cliente atiende una peticion
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 /**
  * Retorna si la cadena de caràcters és palíndrom 1 o no 0
 */
@@ -27,6 +30,12 @@ void toUppercase(char *text){
     for(int i = 0; i < strlen(text); i++){
         text[i] = toupper(text[i]);
     }
+}
+
+void incrementarContador(){
+	pthread_mutex_lock(&mutex);
+	contador++;
+	pthread_mutex_unlock(&mutex);
 }
 
 
@@ -49,38 +58,45 @@ void *atenderCliente(void *socket){
 
 		char *token = strtok(buff, "/");
 		int codigo = atoi(token);
+		char nombre[20];
 
 		if(codigo == 0){
 			close(sock_conn);
 			printf("Cliente desconectado\n");
 			break;
+		}else if(codigo == 6){
+			sprintf(buff2, "%d", contador);
+		}else{
+			// per qualsevol codi diferent de 0:
+			token = strtok(NULL, "/");
+			strcpy(nombre, token);
 		}
-
-		// per qualsevol codi diferent de 0:
-		token = strtok(NULL, "/");
-		char nombre[20];
-		strcpy(nombre, token);
 		
 		if(codigo == 1){
 			//si el codi del missatge és 1, ens estan demanant la longitud del nom
 			sprintf(buff2, "%d", (int) strlen(nombre));
+			incrementarContador();
 		}else if(codigo == 2){
 			//si el codi del missatge és 2, ens estan demanant si el nom és bonic (si comença per M o S)
 			char bonic = (nombre[0] == 'M' || nombre[0] == 'S');
 			sprintf(buff2, "%s", bonic ? "SI" : "NO");
+			incrementarContador();
 		}else if(codigo == 3){
 			//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
 			float altura = atof(strtok(NULL, "/"));
 			sprintf(buff2, "%s", altura > 1.70 ? "SI" : "NO");
+			incrementarContador();
 		}else if(codigo == 4){
 			//retorna si el nom es palíndrom 'Y'/'N'
 			sprintf(buff2, "%s", isPalindrome(nombre) ? "SI" : "NO");
+			incrementarContador();
 		}else if(codigo == 5){
 			//retorna el nom en majúscules
 			char copiaNombre[20];
 			strcpy(copiaNombre, nombre);
 			toUppercase(copiaNombre);
 			sprintf(buff2, "%s", copiaNombre);
+			incrementarContador();
 		}
 
 		//imprimeix el buffer al socket i tanca'l

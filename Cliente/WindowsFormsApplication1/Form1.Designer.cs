@@ -40,7 +40,6 @@
             this.Bonito = new System.Windows.Forms.RadioButton();
             this.Conectar = new System.Windows.Forms.Button();
             this.Desconectar = new System.Windows.Forms.Button();
-            this.servicios = new System.Windows.Forms.Button();
             this.serviciosLabel = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -49,27 +48,24 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(34, 38);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Location = new System.Drawing.Point(23, 25);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 37);
+            this.label2.Size = new System.Drawing.Size(87, 25);
             this.label2.TabIndex = 1;
             this.label2.Text = "Nombre";
             // 
             // nombre
             // 
-            this.nombre.Location = new System.Drawing.Point(174, 48);
-            this.nombre.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.nombre.Location = new System.Drawing.Point(116, 31);
             this.nombre.Name = "nombre";
-            this.nombre.Size = new System.Drawing.Size(244, 26);
+            this.nombre.Size = new System.Drawing.Size(164, 20);
             this.nombre.TabIndex = 3;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(195, 268);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.button2.Location = new System.Drawing.Point(130, 174);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(112, 35);
+            this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
             this.button2.Text = "Enviar";
             this.button2.UseVisualStyleBackColor = true;
@@ -87,11 +83,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.nombre);
-            this.groupBox1.Location = new System.Drawing.Point(18, 175);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBox1.Location = new System.Drawing.Point(12, 114);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.groupBox1.Size = new System.Drawing.Size(544, 434);
+            this.groupBox1.Size = new System.Drawing.Size(363, 282);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Peticion";
@@ -99,9 +93,10 @@
             // Mayusculas
             // 
             this.Mayusculas.AutoSize = true;
-            this.Mayusculas.Location = new System.Drawing.Point(174, 233);
+            this.Mayusculas.Location = new System.Drawing.Point(116, 151);
+            this.Mayusculas.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Mayusculas.Name = "Mayusculas";
-            this.Mayusculas.Size = new System.Drawing.Size(264, 24);
+            this.Mayusculas.Size = new System.Drawing.Size(177, 17);
             this.Mayusculas.TabIndex = 12;
             this.Mayusculas.TabStop = true;
             this.Mayusculas.Text = "Dame mi nombre en mayúsculas";
@@ -110,9 +105,10 @@
             // Palindromo
             // 
             this.Palindromo.AutoSize = true;
-            this.Palindromo.Location = new System.Drawing.Point(174, 203);
+            this.Palindromo.Location = new System.Drawing.Point(116, 132);
+            this.Palindromo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Palindromo.Name = "Palindromo";
-            this.Palindromo.Size = new System.Drawing.Size(267, 24);
+            this.Palindromo.Size = new System.Drawing.Size(180, 17);
             this.Palindromo.TabIndex = 11;
             this.Palindromo.TabStop = true;
             this.Palindromo.Text = "Dime si mi nombre es palíndromo";
@@ -120,17 +116,19 @@
             // 
             // Altura
             // 
-            this.Altura.Location = new System.Drawing.Point(41, 173);
+            this.Altura.Location = new System.Drawing.Point(27, 112);
+            this.Altura.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Altura.Name = "Altura";
-            this.Altura.Size = new System.Drawing.Size(100, 26);
+            this.Altura.Size = new System.Drawing.Size(68, 20);
             this.Altura.TabIndex = 10;
             // 
             // Alto
             // 
             this.Alto.AutoSize = true;
-            this.Alto.Location = new System.Drawing.Point(174, 173);
+            this.Alto.Location = new System.Drawing.Point(116, 112);
+            this.Alto.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Alto.Name = "Alto";
-            this.Alto.Size = new System.Drawing.Size(144, 24);
+            this.Alto.Size = new System.Drawing.Size(98, 17);
             this.Alto.TabIndex = 9;
             this.Alto.TabStop = true;
             this.Alto.Text = "Dime si soy alto";
@@ -139,10 +137,9 @@
             // Longitud
             // 
             this.Longitud.AutoSize = true;
-            this.Longitud.Location = new System.Drawing.Point(174, 140);
-            this.Longitud.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Longitud.Location = new System.Drawing.Point(116, 91);
             this.Longitud.Name = "Longitud";
-            this.Longitud.Size = new System.Drawing.Size(247, 24);
+            this.Longitud.Size = new System.Drawing.Size(166, 17);
             this.Longitud.TabIndex = 7;
             this.Longitud.TabStop = true;
             this.Longitud.Text = "Dime la longitud de mi nombre";
@@ -151,10 +148,9 @@
             // Bonito
             // 
             this.Bonito.AutoSize = true;
-            this.Bonito.Location = new System.Drawing.Point(174, 105);
-            this.Bonito.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Bonito.Location = new System.Drawing.Point(116, 68);
             this.Bonito.Name = "Bonito";
-            this.Bonito.Size = new System.Drawing.Size(233, 24);
+            this.Bonito.Size = new System.Drawing.Size(156, 17);
             this.Bonito.TabIndex = 8;
             this.Bonito.TabStop = true;
             this.Bonito.Text = "Dime si mi nombre es bonito";
@@ -162,9 +158,10 @@
             // 
             // Conectar
             // 
-            this.Conectar.Location = new System.Drawing.Point(59, 61);
+            this.Conectar.Location = new System.Drawing.Point(39, 40);
+            this.Conectar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Conectar.Name = "Conectar";
-            this.Conectar.Size = new System.Drawing.Size(125, 42);
+            this.Conectar.Size = new System.Drawing.Size(83, 27);
             this.Conectar.TabIndex = 7;
             this.Conectar.Text = "Conectar";
             this.Conectar.UseVisualStyleBackColor = true;
@@ -172,44 +169,34 @@
             // 
             // Desconectar
             // 
-            this.Desconectar.Location = new System.Drawing.Point(213, 61);
+            this.Desconectar.Location = new System.Drawing.Point(142, 40);
+            this.Desconectar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Desconectar.Name = "Desconectar";
-            this.Desconectar.Size = new System.Drawing.Size(123, 42);
+            this.Desconectar.Size = new System.Drawing.Size(82, 27);
             this.Desconectar.TabIndex = 8;
             this.Desconectar.Text = "Desconectar";
             this.Desconectar.UseVisualStyleBackColor = true;
             this.Desconectar.Click += new System.EventHandler(this.Desconectar_Click);
             // 
-            // servicios
-            // 
-            this.servicios.Location = new System.Drawing.Point(702, 213);
-            this.servicios.Name = "servicios";
-            this.servicios.Size = new System.Drawing.Size(174, 36);
-            this.servicios.TabIndex = 9;
-            this.servicios.Text = "¿Cuántos servicios?";
-            this.servicios.UseVisualStyleBackColor = true;
-            this.servicios.Click += new System.EventHandler(this.servicios_Click);
-            // 
             // serviciosLabel
             // 
             this.serviciosLabel.AutoSize = true;
-            this.serviciosLabel.Location = new System.Drawing.Point(698, 265);
+            this.serviciosLabel.Location = new System.Drawing.Point(11, 412);
+            this.serviciosLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.serviciosLabel.Name = "serviciosLabel";
-            this.serviciosLabel.Size = new System.Drawing.Size(14, 20);
+            this.serviciosLabel.Size = new System.Drawing.Size(119, 13);
             this.serviciosLabel.TabIndex = 10;
-            this.serviciosLabel.Text = "-";
+            this.serviciosLabel.Text = "Número de peticiones: -";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1112, 865);
+            this.ClientSize = new System.Drawing.Size(741, 562);
             this.Controls.Add(this.serviciosLabel);
-            this.Controls.Add(this.servicios);
             this.Controls.Add(this.Desconectar);
             this.Controls.Add(this.Conectar);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -234,7 +221,6 @@
         private System.Windows.Forms.Button Desconectar;
         private System.Windows.Forms.RadioButton Mayusculas;
         private System.Windows.Forms.RadioButton Palindromo;
-        private System.Windows.Forms.Button servicios;
         private System.Windows.Forms.Label serviciosLabel;
     }
 }

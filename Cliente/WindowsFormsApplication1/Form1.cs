@@ -66,7 +66,7 @@ namespace WindowsFormsApplication1
             }
             else if (Alto.Checked)
             {
-                string mensaje = "3/" + nombre + "/" + Altura.Text;
+                string mensaje = "3/" + nombre.Text + "/" + Altura.Text;
                 byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                 server.Send(msg);
 
@@ -76,7 +76,27 @@ namespace WindowsFormsApplication1
 
                 MessageBox.Show(mensaje);
             }
+            else if (Palindromo.Checked)
+            {
+                string mensaje = "4/" + nombre.Text;
+                byte[] msg = Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
 
+                byte[] response = new byte[80];
+                server.Receive(response);
+                string respuesta = Encoding.ASCII.GetString(response).Split('\0')[0];
+                MessageBox.Show(respuesta == "SI" ? "Tu nombre es palíndromo" : "Tu nombre no es palíndromo");
+            }
+            else if(Mayusculas.Checked){
+                string mensaje = "5/" + nombre.Text;
+                byte[] msg = Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+                byte[] response = new byte[80];
+                server.Receive(response);
+                string respuesta = Encoding.ASCII.GetString(response).Split('\0')[0];
+                MessageBox.Show("Tu nombre en mayúsculas: " + respuesta);
+            }
 
         }
 
@@ -115,6 +135,19 @@ namespace WindowsFormsApplication1
             this.BackColor = Color.Gray;
             server.Shutdown(SocketShutdown.Both);
             server.Close();
+        }
+
+        private void servicios_Click(object sender, EventArgs e)
+        {
+            // obtiene el número de servicios atendidos por el servidor
+            string message = "6/";
+            byte[] bytes = Encoding.ASCII.GetBytes(message);
+            server.Send(bytes);
+
+            byte[] response = new byte[80];
+            server.Receive(response);
+            string respuesta = Encoding.ASCII.GetString(response).Split('\0')[0];
+            serviciosLabel.Text = respuesta;
         }
     }
 }

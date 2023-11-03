@@ -11,6 +11,9 @@
 int contador = 0; //incrementará cada vez que el cliente atiende una peticion
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
+int sockets[100];
+int numSockets = 0;
+
 /**
  * Retorna si la cadena de caràcters és palíndrom 1 o no 0
 */
@@ -36,6 +39,12 @@ void incrementarContador(){
 	pthread_mutex_lock(&mutex);
 	contador++;
 	pthread_mutex_unlock(&mutex);
+
+	char response[20];
+	sprintf(response, "6/%d", contador);
+	for(int i = 0; i < numSockets; i++){
+		write(sockets[i], response, strlen(response));
+	}
 }
 
 
@@ -64,38 +73,36 @@ void *atenderCliente(void *socket){
 			close(sock_conn);
 			printf("Cliente desconectado\n");
 			break;
-		}else if(codigo == 6){
-			sprintf(buff2, "%d", contador);
-		}else{
-			// per qualsevol codi diferent de 0:
-			token = strtok(NULL, "/");
-			strcpy(nombre, token);
 		}
+
+		// per qualsevol codi diferent de 0:
+		token = strtok(NULL, "/");
+		strcpy(nombre, token);
 		
 		if(codigo == 1){
 			//si el codi del missatge és 1, ens estan demanant la longitud del nom
-			sprintf(buff2, "%d", (int) strlen(nombre));
+			sprintf(buff2, "1/%d", (int) strlen(nombre));
 			incrementarContador();
 		}else if(codigo == 2){
 			//si el codi del missatge és 2, ens estan demanant si el nom és bonic (si comença per M o S)
 			char bonic = (nombre[0] == 'M' || nombre[0] == 'S');
-			sprintf(buff2, "%s", bonic ? "SI" : "NO");
+			sprintf(buff2, "2/%s", bonic ? "SI" : "NO");
 			incrementarContador();
 		}else if(codigo == 3){
 			//si el codi del missatge és 3, el tercer paràmetre correspon a l'altura i hem de retornar si és alt o no
 			float altura = atof(strtok(NULL, "/"));
-			sprintf(buff2, "%s", altura > 1.70 ? "SI" : "NO");
+			sprintf(buff2, "3/%s", altura > 1.70 ? "SI" : "NO");
 			incrementarContador();
 		}else if(codigo == 4){
 			//retorna si el nom es palíndrom 'Y'/'N'
-			sprintf(buff2, "%s", isPalindrome(nombre) ? "SI" : "NO");
+			sprintf(buff2, "4/%s", isPalindrome(nombre) ? "SI" : "NO");
 			incrementarContador();
 		}else if(codigo == 5){
 			//retorna el nom en majúscules
 			char copiaNombre[20];
 			strcpy(copiaNombre, nombre);
 			toUppercase(copiaNombre);
-			sprintf(buff2, "%s", copiaNombre);
+			sprintf(buff2, "5/%s", copiaNombre);
 			incrementarContador();
 		}
 
@@ -121,25 +128,23 @@ int main(int argc, char *charv[]){
 	serv_adr.sin_port = htons(9050);
 
 	if (bind(sock_listen, (struct sockaddr *) &serv_adr, sizeof(serv_adr)) < 0){
-		printf ("Error al bind");
+		printf ("Error al bind\n");
 		exit(-1);
 	}
 	//La cola de peticiones pendientes no podr? ser superior a 4 --> no sería 2 ???
 	if (listen(sock_listen, 2) < 0){
-		printf("Error en el Listen");
+		printf("Error en el Listen\n");
 		exit(-1);
 	}
 
-	int sockets[100];
-	int i = 0;
 	while(1){
 		printf("Escuchando\n");
 		int sock_conn = accept(sock_listen, NULL, NULL);
 		printf("Cliente conectado\n");
-		sockets[i] = sock_conn;
+		sockets[numSockets] = sock_conn;
 		pthread_t t;	//no necessitem aquest valor, no el guardem enlloc
-		pthread_create(&t, NULL, atenderCliente, &sockets[i]);
-		i++;
+		pthread_create(&t, NULL, atenderCliente, &sockets[numSockets]);
+		numSockets++;
 	}
 
 
